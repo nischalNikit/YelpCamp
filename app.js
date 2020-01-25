@@ -8,16 +8,12 @@ mongoose.connect('mongodb://localhost/yelp_camp',{useNewUrlParser: true,'useUnif
 app.use(bodyParse.urlencoded({extended: true}));
 
 
-
 //Schema Setup
-var campgroundSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-}); 
-var Campground = mongoose.model("Campground",campgroundSchema);
+var Campground = require("./models/campground.js");
 
-
+//Seeds File
+var seedDB = require("./seeds.js");
+seedDB();
 
 //Routes - Based on REST
 app.get("/",function(req,res){
@@ -63,7 +59,7 @@ app.get("/campgrounds/new",function(req,res){
 });
 
 app.get("/campgrounds/:id",function(req,res){
-    Campground.findById(req.params.id, function(error, data){
+    Campground.findById(req.params.id).populate("comments").exec(function(error, data){
         if(error){
             console.log(error);
         }
