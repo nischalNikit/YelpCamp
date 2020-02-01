@@ -2,18 +2,21 @@
 var express               = require("express"),
     app                   = express(),
     bodyParse             = require("body-parser"),
+    methodOverride        = require("method-override"),
     mongoose              = require("mongoose"),
     passport              = require("passport"),
     localStrategy         = require("passport-local");
 
-mongoose.connect('mongodb://localhost/yelp_camp',{useNewUrlParser: true,'useUnifiedTopology':true});
+mongoose.connect('mongodb://localhost/yelp_camp',
+    {
+        useNewUrlParser: true,
+        'useUnifiedTopology':true,
+        'useFindAndModify':false
+});
 app.use(bodyParse.urlencoded({extended: true}));
 
-///////////////////// Routes
-var campgroundRoutes = require("./routes/campgrounds.js"),
-    commentRoutes    = require("./routes/comments.js"),
-    indexRoutes      = require("./routes/index.js");    
-
+//////////////////// Method Override
+app.use(methodOverride("_method"));
 
 ///////////////////// StyleSheet Public Folder
 app.use(express.static(__dirname + "/public"));
@@ -28,6 +31,12 @@ var User       = require("./models/user.js");
 ///////////////////// Seeds File
 var seedDB = require("./seeds.js");
 //seedDB();
+
+
+///////////////////// Routes
+var campgroundRoutes = require("./routes/campgrounds.js"),
+    commentRoutes    = require("./routes/comments.js"),
+    indexRoutes      = require("./routes/index.js");   
 
 
 ///////////////////// Passport Configuration
