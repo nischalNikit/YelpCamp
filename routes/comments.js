@@ -46,6 +46,46 @@ router.post("/", isLoggedIn, function(req,res){
     });
 });    
 
+//Edit Route
+router.get("/:comment_id/edit",checkCommentOwnership,function(req,res){
+    
+    var foundId = req.params.id;
+    Comment.findById(req.params.comment_id,function(err, foundComment){
+        if(err){
+            res.redirect("back");
+        }
+        else{
+            res.render("comments/edit.ejs",{campgroundId: foundId, comment: foundComment});
+        }
+    });
+});
+
+
+//Update Route
+router.put("/:comment_id/",checkCommentOwnership,function(req,res){
+     Comment.findByIdAndUpdate(req.params.comment_id,req.body.comment,function(err,newComment){
+         if(err){
+             console.log("Error!");
+         }
+         else{
+             res.redirect("/campgrounds/" + req.params.id);
+         }
+     });
+});
+
+
+//Destroy Route
+router.delete("/:comment_id/",checkCommentOwnership,function(req,res){
+    Comment.findByIdAndRemove(req.params.comment_id,function(err,foundComment){
+        if(err){
+            console.log("There's an error!");
+        }
+        else{
+            res.redirect("/campgrounds/" + req.params.id);
+        }
+    });
+});
+
 
 //MiddleWare Function
 function isLoggedIn(req,res,next){
@@ -53,6 +93,33 @@ function isLoggedIn(req,res,next){
         return next();
     }
     res.redirect("/login");
+}
+
+function checkCommentOwnership(req,res,next){
+  
+    //if the user is logged In,then allow access.
+    if(req.isAuthenticated()){
+       
+        //find the owner of comment
+        Comment.findById(req.params.comment_id,function(err,foundComment){
+            if(err){
+                res.redirect("back");
+            }
+            else{
+                //Check for equality with logged In User
+                if(foundComment.author.id.equals(req.user._id)){
+                    next();
+                }
+                else{
+                    res.redirect("back");
+                }
+            }
+        })
+    }
+    //If the user is logged Out,Redirect to login page.
+    else{
+        res.redirect("/login");
+    } 
 }
  
 
