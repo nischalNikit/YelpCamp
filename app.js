@@ -4,6 +4,7 @@ var express               = require("express"),
     bodyParse             = require("body-parser"),
     methodOverride        = require("method-override"),
     mongoose              = require("mongoose"),
+    flash                 = require("connect-flash"),
     passport              = require("passport"),
     localStrategy         = require("passport-local");
 
@@ -13,10 +14,16 @@ mongoose.connect('mongodb://localhost/yelp_camp',
         'useUnifiedTopology':true,
         'useFindAndModify':false
 });
+
+
 app.use(bodyParse.urlencoded({extended: true}));
 
 //////////////////// Method Override
 app.use(methodOverride("_method"));
+
+/////////////////// Connect-Flash
+app.use(flash());
+
 
 ///////////////////// StyleSheet Public Folder
 app.use(express.static(__dirname + "/public"));
@@ -57,6 +64,8 @@ passport.deserializeUser(User.deserializeUser());
 ///////////////////// Providing 'currentUser' to each template
 app.use(function(req,res,next){
     res.locals.currentUser = req.user;
+    res.locals.error     = req.flash("error");
+    res.locals.success   = req.flash("success");
     next();
 });
 
