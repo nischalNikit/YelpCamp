@@ -26,13 +26,15 @@ router.get("/",function(req,res){
 
 //New Campground Page Creation
 router.post("/",MiddleWare.isLoggedIn,function(req,res){
-    var name = req.body.name;
+    var name   = req.body.name;
     var imgURL = req.body.image;
-    var desc = req.body.description;
+    var price  = req.body.price;
+    var desc   = req.body.description;
 
     var newCampground = {
         name:name,
         image: imgURL,
+        price: price,
         description: desc
     };
 
