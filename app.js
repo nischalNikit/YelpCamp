@@ -78,7 +78,7 @@ app.use("/campgrounds/:id/comments",commentRoutes);
 
 
 /////////////////////// Server
-app.listen(3000,function(){
+app.listen(process.env.PORT || 3000,function(){
     console.log("YelpCamp is working at 3000.");
 });
 
