@@ -8,11 +8,12 @@ var express               = require("express"),
     passport              = require("passport"),
     localStrategy         = require("passport-local");
 
-mongoose.connect('mongodb+srv://Nischal_Nikit:Nischal1234@cluster0-2swe1.mongodb.net/test?retryWrites=true&w=majority',{
+mongoose.connect('mongodb+srv://Nischal_Nikit:nischal123@cluster0-2swe1.mongodb.net/test?retryWrites=true&w=majority',{
     useNewUrlParser: true,
     'useUnifiedTopology':true,
     'useFindAndModify':false
 });
+
 
 app.use(bodyParse.urlencoded({extended: true}));
 
@@ -76,7 +77,7 @@ app.use("/campgrounds/:id/comments",commentRoutes);
 
 
 /////////////////////// Server
-app.listen(process.env.PORT || 3000,function(){
+app.listen(process.env.PORT || 3000, process.env.IP, function(){
     console.log("YelpCamp is working at 3000.");
 });
 
