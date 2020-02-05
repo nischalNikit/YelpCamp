@@ -8,7 +8,7 @@ var express               = require("express"),
     passport              = require("passport"),
     localStrategy         = require("passport-local");
 
-mongoose.connect('mongodb+srv://Nischal_Nikit:nischal123@cluster0-2swe1.mongodb.net/test?retryWrites=true&w=majority',{
+mongoose.connect(DATABASEURL,{
     useNewUrlParser: true,
     'useUnifiedTopology':true,
     'useFindAndModify':false
