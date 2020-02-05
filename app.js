@@ -8,13 +8,11 @@ var express               = require("express"),
     passport              = require("passport"),
     localStrategy         = require("passport-local");
 
-mongoose.connect('mongodb://localhost/yelp_camp',
-    {
-        useNewUrlParser: true,
-        'useUnifiedTopology':true,
-        'useFindAndModify':false
+mongoose.connect('mongodb+srv://Nischal_Nikit:Nischal1234@cluster0-2swe1.mongodb.net/test?retryWrites=true&w=majority',{
+    useNewUrlParser: true,
+    'useUnifiedTopology':true,
+    'useFindAndModify':false
 });
-
 
 app.use(bodyParse.urlencoded({extended: true}));
 
